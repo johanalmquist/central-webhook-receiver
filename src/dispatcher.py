@@ -26,9 +26,16 @@ class Dispatch(object):
     def _dishpatch(self, alerttType: str):
         if alerttType == "New AP detected":
             self._newAP(self.data.device_id)
+        if alerttType == "AP disconnected":
+            self._disconnectedAP(self.data)
 
     def _newAP(self, device_id: str):
         self.channel.queue_declare(queue="new-ap")
         self.channel.basic_publish(exchange="", routing_key="new-ap", body=device_id)
         self.connection.close()
+        return None
+
+    def _disconnectedAP(self, info: Info):
+        message = f"{info.text} at {info.details['time']} level {info.severity}"
+        print(message)
         return None
