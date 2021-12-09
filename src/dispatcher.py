@@ -36,6 +36,14 @@ class Dispatch(object):
         return None
 
     def _disconnectedAP(self, info: Info):
-        message = f"{info.text} at {info.details['time']} level {info.severity}"
-        print(message)
+        message = {
+            "message": f"{info.text} at {info.details['time']} level {info.severity}"
+        }
+        url = "http://notification:8001/slack/"
+        headers = {"Content-Type": "application/json"}
+        import json
+
+        import requests
+
+        requests.post(url=url, data=json.dumps(message), headers=headers)
         return None
