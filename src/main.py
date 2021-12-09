@@ -7,6 +7,7 @@ from .core import models
 from .core.database import engine
 from .core.dependencies import validate_webhook
 from .core.routers import webhook
+from .dispatcher import Dispatch, Info
 
 app = FastAPI()
 
@@ -28,3 +29,9 @@ async def parse_comming(request: Request, is_okey: bool = Depends(validate_webho
     channel.queue_declare(queue="new-ap")
     channel.basic_publish(exchange="", routing_key="new-ap", body=json.dumps(body))
     connection.close()
+
+
+@app.post("/testing")
+async def testing(data: Info):
+    Dispatch(data)
+    return True
