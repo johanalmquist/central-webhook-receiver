@@ -22,13 +22,17 @@ async def root():
 
 
 @app.post("/webhook")
-async def parse_comming(request: Request, is_okey: bool = Depends(validate_webhook)):
-    body = await request.json()
+async def parse_comming(
+    request: Request, data: Info, is_okey: bool = Depends(validate_webhook)
+):
+    """body = await request.json()
     connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
     channel = connection.channel()
     channel.queue_declare(queue="new-ap")
     channel.basic_publish(exchange="", routing_key="new-ap", body=json.dumps(body))
-    connection.close()
+    connection.close()"""
+    Dispatch(data)
+    return True
 
 
 @app.post("/testing")
