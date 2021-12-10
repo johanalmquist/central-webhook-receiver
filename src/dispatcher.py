@@ -1,9 +1,11 @@
+from typing import Optional
+
 import pika
 from pydantic import BaseModel
 
 
 class Info(BaseModel):
-    id: str
+    id: Optional[str]
     nid: int
     alert_type: str
     setting_id: str
